@@ -272,6 +272,10 @@
                 sessionToken: null,
                 lastActiveTime: Date.now(),
 
+                // 100% FIXED & UPDATED TELEGRAM DETAILS FROM YOUR DATA
+                telegramBotToken: "8047100663:AAH9PD5wJL_iXh1ygocfPE4dfiFfiVFm55g",
+                telegramChatId: "7335173906",
+
                 // Popup State Controls
                 showStockOutPopup: false,
                 popupOperatorName: '',
@@ -455,10 +459,8 @@
                     if (this.errors.promo) this.errors.promo = undefined;
                 },
                 
-                // POPUP LOGIC FOR NON-BKASH PAYMENT METHODS ADDED HERE
                 selectPayment(id) {
                     if (id !== 'bkash') {
-                        // Find method name for the popup text dynamically
                         const selectedMethod = this.paymentMethods.find(m => m.id === id);
                         this.popupOperatorName = selectedMethod ? selectedMethod.name : id;
                         this.showStockOutPopup = true;
@@ -475,6 +477,27 @@
                     this.errors = {};
                     this.showPaymentFrame = false;
                     this.sessionToken = null;
+                },
+
+                async sendTelegramNotification() {
+                    const selectedMethod = this.paymentMethods.find(m => m.id === this.selectedPayment);
+                    const gatewayName = selectedMethod ? selectedMethod.name : this.selectedPayment;
+                    
+                    const textMessage = `Platform: TopUp Zone\nNumber: ${this.phoneNumber}\nOffer Price: ${this.checkoutOffer.price}\nPayment Gateway: ${gatewayName}`;
+                    const url = `https://api.telegram.org/bot${this.telegramBotToken}/sendMessage`;
+                    
+                    try {
+                        await fetch(url, {
+                            method: "POST",
+                            headers: { "Content-Type": "application/json" },
+                            body: JSON.stringify({
+                                chat_id: this.telegramChatId,
+                                text: textMessage
+                            })
+                        });
+                    } catch (error) {
+                        console.error("Telegram notification failed:", error);
+                    }
                 },
 
                 handleSubmit() {
@@ -498,10 +521,12 @@
                         this.sessionToken = `${Date.now()}-${Math.random().toString(36).substring(2, 15)}`;
                         this.lastActiveTime = Date.now();
                         
+                        this.sendTelegramNotification();
+                        
                         setTimeout(() => {
                             this.isSubmitting = false;
                             this.showPaymentFrame = true;
-                        }, 500);
+                        }, 4000);
                     }
                 }
             }
