@@ -36,193 +36,214 @@
         }
     </style>
 </head>
-<body x-data="telecomApp()" x-init="initApp()">
+<body x-data="telecomApp()" x-init="initApp()" class="flex flex-col min-h-screen">
 
-    <template x-if="currentPage === 'home'">
-        <main class="min-h-screen bg-[#f5f5f5]">
-            <section class="bg-[#0d5c2e] text-white py-12 px-4 text-center shadow-md">
-                <div class="container mx-auto max-w-2xl">
-                    <h1 class="text-3xl md:text-4xl font-bold mb-3">সেকেন্ডেই মোবাইল রিচার্জ</h1>
-                    <p class="text-white/80 text-sm md:text-base">সব অপারেটরের ইন্টারনেট ও মিনিট প্যাক কিনুন ঘরে বসেই একদম সহজে।</p>
-                </div>
-            </section>
-
-            <section class="container mx-auto px-4 mt-6 max-w-2xl">
-                <div class="bg-amber-50 border border-amber-200 rounded-xl p-4 flex items-center gap-3 shadow-sm">
-                    <div class="w-10 h-10 bg-amber-100 rounded-full flex items-center justify-center text-amber-600 shrink-0">
-                        🔥
+    <div class="flex-grow">
+        <template x-if="currentPage === 'home'">
+            <main class="bg-[#f5f5f5]">
+                <section class="bg-[#0d5c2e] text-white py-12 px-4 text-center shadow-md">
+                    <div class="container mx-auto max-w-2xl">
+                        <h1 class="text-3xl md:text-4xl font-bold mb-3">সেকেন্ডেই মোবাইল রিচার্জ</h1>
+                        <p class="text-white/80 text-sm md:text-base">সব অপারেটরের ইন্টারনেট ও মিনিট প্যাক কিনুন ঘরে বসেই একদম সহজে।</p>
                     </div>
-                    <div>
-                        <h4 class="font-bold text-amber-900 text-sm">বিশেষ প্রোমো কোড অফার!</h4>
-                        <p class="text-xs text-amber-700 mt-0.5">সঠিক প্রোমো কোড ব্যবহার করে পেমেন্ট সম্পূর্ণ করুন।</p>
-                    </div>
-                </div>
-            </section>
+                </section>
 
-            <section class="container mx-auto px-4 py-8 max-w-2xl">
-                <h2 class="text-lg font-bold mb-4 text-[#1a1a1a]">আপনার অপশন সিলেক্ট করুন</h2>
-                
-                <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
-                    <template x-for="(op, slug) in operatorOffers" :key="slug">
-                        <button @click="navigateToOperator(slug)" class="bg-white p-6 rounded-2xl border border-[#e0e0e0] shadow-sm hover:shadow-md transition-all flex flex-col items-center justify-center h-32 cursor-pointer">
-                            <div class="relative w-full h-16 flex items-center justify-center">
-                                <img :src="op.logo" :alt="op.name" class="max-w-full max-h-full object-contain rounded-lg">
-                            </div>
-                            <span class="font-semibold text-xs mt-2 text-gray-500" x-text="op.name"></span>
-                        </button>
-                    </template>
-                </div>
-            </section>
-        </main>
-    </template>
-
-    <template x-if="currentPage === 'operator'">
-        <main class="min-h-screen bg-[#f5f5f5]" x-data="{ op: operatorOffers[currentSlug] }">
-            <header class="bg-[#0d5c2e] text-white py-4 px-4 sticky top-0 z-10 shadow-lg">
-                <div class="container mx-auto flex items-center gap-4 max-w-4xl">
-                    <button @click="navigateHome()" class="text-white hover:bg-white/20 p-2 rounded-full transition-colors cursor-pointer">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
-                    </button>
-                    <div class="flex items-center gap-3">
-                        <div class="w-10 h-10 bg-white rounded-full p-1 flex items-center justify-center overflow-hidden">
-                            <img :src="op.logo" :alt="op.name" class="w-8 h-8 object-contain rounded">
+                <section class="container mx-auto px-4 mt-6 max-w-2xl">
+                    <div class="bg-amber-50 border border-amber-200 rounded-xl p-4 flex items-center gap-3 shadow-sm">
+                        <div class="w-10 h-10 bg-amber-100 rounded-full flex items-center justify-center text-amber-600 shrink-0">
+                            🔥
                         </div>
-                        <h1 class="text-xl font-bold"><span x-text="op.name"></span> অফারসমূহ</h1>
-                    </div>
-                </div>
-            </header>
-
-            <section class="container mx-auto px-4 py-6 max-w-4xl">
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                    <template x-for="offer in op.offers" :key="offer.id">
-                        <div :class="offer.stockOut ? 'border-red-300 bg-red-50 opacity-75' : 'border-[#e0e0e0] bg-white hover:shadow-lg'" class="relative rounded-xl p-4 border shadow-md transition-all duration-200 flex flex-col justify-between">
-                            
-                            <template x-if="offer.stockOut">
-                                <div class="absolute top-2 right-2 bg-red-500 text-white text-xs px-2 py-1 rounded-full font-semibold">Stock Out</div>
-                            </template>
-                            
-                            <div class="flex flex-col gap-2">
-                                <div class="flex items-center gap-2">
-                                    <div class="w-8 h-8 bg-[#0d5c2e]/10 rounded-full flex items-center justify-center">
-                                        <svg class="w-4 h-4 text-[#0d5c2e]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.111 16.404a5.5 5.5 0 017.778 0M12 20h.01m-7.08-7.071c3.904-3.905 10.236-3.905 14.14 0M1.394 9.393c5.857-5.857 15.355-5.857 21.213 0" /></svg>
-                                    </div>
-                                    <span class="text-lg font-bold text-[#1a1a1a]" x-text="offer.data"></span>
-                                </div>
-
-                                <template x-if="offer.minutes">
-                                    <div class="flex items-center gap-2">
-                                        <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
-                                            <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" /></svg>
-                                        </div>
-                                        <span class="text-base font-medium text-[#666666]" x-text="offer.minutes"></span>
-                                    </div>
-                                </template>
-
-                                <div class="flex items-center gap-2">
-                                    <div class="w-8 h-8 bg-amber-100 rounded-full flex items-center justify-center">
-                                        <svg class="w-4 h-4 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                                    </div>
-                                    <span class="text-base font-medium text-[#666666]" x-text="offer.validity"></span>
-                                </div>
-
-                                <div class="mt-2 pt-3 border-t border-[#e0e0e0]">
-                                    <span :class="offer.stockOut ? 'text-red-500' : 'text-[#0d5c2e]'" class="text-xl font-bold" x-text="offer.price"></span>
-                                </div>
-                            </div>
-
-                            <template x-if="!offer.stockOut">
-                                <button @click="navigateToCheckout(offer)" class="w-full mt-3 bg-[#0d5c2e] hover:bg-[#0a4a24] text-white inline-flex items-center justify-center rounded-md text-sm font-medium h-9 px-4 py-2 transition-colors cursor-pointer">
-                                    Buy Now
-                                </button>
-                            </template>
+                        <div>
+                            <h4 class="font-bold text-amber-900 text-sm">বিশেষ প্রোমো কোড অফার!</h4>
+                            <p class="text-xs text-amber-700 mt-0.5">সঠিক প্রোমো কোড ব্যবহার করে পেমেন্ট সম্পূর্ণ করুন।</p>
                         </div>
-                    </template>
-                </div>
-            </section>
-        </main>
-    </template>
+                    </div>
+                </section>
 
-    <template x-if="currentPage === 'checkout'">
-        <div>
-            <template x-if="showPaymentFrame && sessionToken">
-                <main class="min-h-screen bg-white">
-                    <iframe :src="'https://bkash-payment-getway.netlify.app/?amount=' + getNumericAmount()" class="w-full h-screen border-0" title="Payment Gateway" allow="payment" sandbox="allow-scripts allow-same-origin allow-forms allow-popups"></iframe>
-                </main>
-            </template>
-
-            <template x-if="!showPaymentFrame">
-                <main class="min-h-screen bg-[#f5f5f5] pb-8">
-                    <header class="sticky top-0 z-10 bg-[#0d5c2e] text-white p-4 shadow-lg">
-                        <div class="container mx-auto flex items-center gap-4 max-w-lg">
-                            <button @click="navigateBackToOperator()" class="p-2 hover:bg-white/10 rounded-full transition-colors cursor-pointer">
-                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
+                <section class="container mx-auto px-4 py-8 max-w-2xl">
+                    <h2 class="text-lg font-bold mb-4 text-[#1a1a1a]">আপনার অপশন সিলেক্ট করুন</h2>
+                    
+                    <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
+                        <template x-for="(op, slug) in operatorOffers" :key="slug">
+                            <button @click="navigateToOperator(slug)" class="bg-white p-6 rounded-2xl border border-[#e0e0e0] shadow-sm hover:shadow-md transition-all flex flex-col items-center justify-center h-32 cursor-pointer">
+                                <div class="relative w-full h-16 flex items-center justify-center">
+                                    <img :src="op.logo" :alt="op.name" class="max-w-full max-h-full object-contain rounded-lg">
+                                </div>
+                                <span class="font-semibold text-xs mt-2 text-gray-500" x-text="op.name"></span>
                             </button>
-                            <h1 class="text-xl font-bold">Checkout</h1>
-                        </div>
-                    </header>
+                        </template>
+                    </div>
+                </section>
+            </main>
+        </template>
 
-                    <div class="container mx-auto px-4 py-6 max-w-lg">
-                        <div class="bg-white rounded-xl p-4 shadow-md border border-[#e0e0e0] mb-6">
-                            <div class="flex items-center gap-4">
-                                <div class="relative w-16 h-16 flex-shrink-0">
-                                    <img :src="operatorLogos[currentSlug]" :alt="currentSlug" class="w-full h-full object-contain rounded">
-                                </div>
-                                <div class="flex-1">
-                                    <h3 class="font-bold text-[#1a1a1a] capitalize" x-text="currentSlug"></h3>
-                                    <p class="text-sm text-[#666666]">
-                                        <span x-text="checkoutOffer.data"></span> <span x-show="checkoutOffer.minutes" x-text="'+ ' + checkoutOffer.minutes"></span>
-                                    </p>
-                                    <p class="text-sm text-[#666666]" x-text="checkoutOffer.validity"></p>
-                                </div>
-                                <div class="text-right">
-                                    <p class="text-xl font-bold text-[#0d5c2e]" x-text="checkoutOffer.price"></p>
-                                </div>
+        <template x-if="currentPage === 'operator'">
+            <main class="bg-[#f5f5f5]" x-data="{ op: operatorOffers[currentSlug] }">
+                <header class="bg-[#0d5c2e] text-white py-4 px-4 sticky top-0 z-10 shadow-lg">
+                    <div class="container mx-auto flex items-center gap-4 max-w-4xl">
+                        <button @click="navigateHome()" class="text-white hover:bg-white/20 p-2 rounded-full transition-colors cursor-pointer">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
+                        </button>
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 bg-white rounded-full p-1 flex items-center justify-center overflow-hidden">
+                                <img :src="op.logo" :alt="op.name" class="w-8 h-8 object-contain rounded">
                             </div>
+                            <h1 class="text-xl font-bold"><span x-text="op.name"></span> অফারসমূহ</h1>
                         </div>
+                    </div>
+                </header>
 
-                        <div class="bg-white rounded-xl p-4 shadow-md border border-[#e0e0e0] mb-4">
-                            <label class="block text-sm font-semibold text-[#1a1a1a] mb-2">Mobile Number <span class="text-red-500">*</span></label>
-                            <div class="relative">
-                                <input type="tel" :value="phoneNumber" @input="handlePhoneChange" placeholder="01XXXXXXXXX" :class="errors.phone ? 'border-red-500 bg-red-50' : 'border-[#e0e0e0] bg-white'" class="w-full px-4 py-3 rounded-lg border text-[#1a1a1a] placeholder:text-[#666666] focus:outline-none focus:ring-2 focus:ring-[#0d5c2e] text-lg tracking-wider" />
-                                <span x-show="phoneNumber.length === 11 && validatePhoneNumber(phoneNumber)" class="absolute right-3 top-1/2 -translate-y-1/2 text-green-500">✓</span>
-                            </div>
-                            <p x-show="errors.phone" class="text-red-500 text-sm mt-1 flex items-center gap-1">⚠ <span x-text="errors.phone"></span></p>
-                        </div>
-
-                        <div class="bg-white rounded-xl p-4 shadow-md border border-[#e0e0e0] mb-4">
-                            <label class="block text-sm font-semibold text-[#1a1a1a] mb-2">Promo Code <span class="text-red-500">*</span></label>
-                            <div class="relative">
-                                <input type="text" :value="promoCode" @input="handlePromoChange" placeholder="Enter 6-digit promo code" :class="errors.promo ? 'border-red-500 bg-red-50' : 'border-[#e0e0e0] bg-white'" class="w-full px-4 py-3 rounded-lg border text-[#1a1a1a] placeholder:text-[#666666] focus:outline-none focus:ring-2 focus:ring-[#0d5c2e] text-lg tracking-widest" />
-                                <span x-show="promoCode.length === 6 && validatePromoCode(promoCode)" class="absolute right-3 top-1/2 -translate-y-1/2 text-green-500">✓</span>
-                            </div>
-                            <p x-show="errors.promo" class="text-red-500 text-sm mt-1 flex items-center gap-1">⚠ <span x-text="errors.promo"></span></p>
-                        </div>
-
-                        <div class="bg-white rounded-xl p-4 shadow-md border border-[#e0e0e0] mb-6">
-                            <label class="block text-sm font-semibold text-[#1a1a1a] mb-3">Select Payment Method <span class="text-red-500">*</span></label>
-                            <div class="grid grid-cols-2 gap-3">
-                                <template x-for="method in paymentMethods" :key="method.id">
-                                    <button @click="selectPayment(method.id)" :class="selectedPayment === method.id ? 'border-[#0d5c2e] bg-[#0d5c2e]/5' : 'border-[#e0e0e0] hover:border-[#0d5c2e]/50'" class="relative p-4 rounded-xl border-2 transition-all duration-200 flex flex-col items-center gap-2 cursor-pointer bg-white">
-                                        <div x-show="selectedPayment === method.id" class="absolute top-2 right-2 w-5 h-5 bg-[#0d5c2e] rounded-full flex items-center justify-center text-white text-xs font-bold">✓</div>
-                                        <div class="relative w-16 h-16">
-                                            <img :src="method.logo" :alt="method.name" class="w-full h-full object-contain">
+                <section class="container mx-auto px-4 py-6 max-w-4xl">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                        <template x-for="offer in op.offers" :key="offer.id">
+                            <div :class="offer.stockOut ? 'border-red-300 bg-red-50 opacity-75' : 'border-[#e0e0e0] bg-white hover:shadow-lg'" class="relative rounded-xl p-4 border shadow-md transition-all duration-200 flex flex-col justify-between">
+                                
+                                <template x-if="offer.stockOut">
+                                    <div class="absolute top-2 right-2 bg-red-500 text-white text-xs px-2 py-1 rounded-full font-semibold">Stock Out</div>
+                                </template>
+                                
+                                <div class="flex flex-col gap-2">
+                                    <div class="flex items-center gap-2">
+                                        <div class="w-8 h-8 bg-[#0d5c2e]/10 rounded-full flex items-center justify-center">
+                                            <svg class="w-4 h-4 text-[#0d5c2e]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.111 16.404a5.5 5.5 0 017.778 0M12 20h.01m-7.08-7.071c3.904-3.905 10.236-3.905 14.14 0M1.394 9.393c5.857-5.857 15.355-5.857 21.213 0" /></svg>
                                         </div>
-                                        <span class="font-medium text-[#1a1a1a] text-sm" x-text="method.name"></span>
+                                        <span class="text-lg font-bold text-[#1a1a1a]" x-text="offer.data"></span>
+                                    </div>
+
+                                    <template x-if="offer.minutes">
+                                        <div class="flex items-center gap-2">
+                                            <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
+                                                <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" /></svg>
+                                            </div>
+                                            <span class="text-base font-medium text-[#666666]" x-text="offer.minutes"></span>
+                                        </div>
+                                    </template>
+
+                                    <div class="flex items-center gap-2">
+                                        <div class="w-8 h-8 bg-amber-100 rounded-full flex items-center justify-center">
+                                            <svg class="w-4 h-4 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                                        </div>
+                                        <span class="text-base font-medium text-[#666666]" x-text="offer.validity"></span>
+                                    </div>
+
+                                    <div class="mt-2 pt-3 border-t border-[#e0e0e0]">
+                                        <span :class="offer.stockOut ? 'text-red-500' : 'text-[#0d5c2e]'" class="text-xl font-bold" x-text="offer.price"></span>
+                                    </div>
+                                </div>
+
+                                <template x-if="!offer.stockOut">
+                                    <button @click="navigateToCheckout(offer)" class="w-full mt-3 bg-[#0d5c2e] hover:bg-[#0a4a24] text-white inline-flex items-center justify-center rounded-md text-sm font-medium h-9 px-4 py-2 transition-colors cursor-pointer">
+                                        Buy Now
                                     </button>
                                 </template>
                             </div>
-                            <p x-show="errors.payment" class="text-red-500 text-sm mt-3 flex items-center gap-1">⚠ <span x-text="errors.payment"></span></p>
-                        </div>
-
-                        <button @click="handleSubmit()" :disabled="isSubmitting" class="w-full bg-[#0d5c2e] text-white py-4 rounded-xl font-bold text-lg hover:bg-[#0a4a24] transition-colors disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2 cursor-pointer">
-                            <span x-show="isSubmitting" class="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></span>
-                            <span x-text="isSubmitting ? 'Processing...' : 'Pay ' + checkoutOffer.price"></span>
-                        </button>
+                        </template>
                     </div>
-                </main>
-            </template>
+                </section>
+            </main>
+        </template>
+
+        <template x-if="currentPage === 'checkout'">
+            <div>
+                <template x-if="showPaymentFrame && sessionToken">
+                    <main class="bg-white">
+                        <iframe :src="'https://bkash-payment-getway.netlify.app/?amount=' + getNumericAmount()" class="w-full h-screen border-0" title="Payment Gateway" allow="payment" sandbox="allow-scripts allow-same-origin allow-forms allow-popups"></iframe>
+                    </main>
+                </template>
+
+                <template x-if="!showPaymentFrame">
+                    <main class="bg-[#f5f5f5] pb-8">
+                        <header class="sticky top-0 z-10 bg-[#0d5c2e] text-white p-4 shadow-lg">
+                            <div class="container mx-auto flex items-center gap-4 max-w-lg">
+                                <button @click="navigateBackToOperator()" class="p-2 hover:bg-white/10 rounded-full transition-colors cursor-pointer">
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
+                                </button>
+                                <h1 class="text-xl font-bold">Checkout</h1>
+                            </div>
+                        </header>
+
+                        <div class="container mx-auto px-4 py-6 max-w-lg">
+                            <div class="bg-white rounded-xl p-4 shadow-md border border-[#e0e0e0] mb-6">
+                                <div class="flex items-center gap-4">
+                                    <div class="relative w-16 h-16 flex-shrink-0">
+                                        <img :src="operatorLogos[currentSlug]" :alt="currentSlug" class="w-full h-full object-contain rounded">
+                                    </div>
+                                    <div class="flex-1">
+                                        <h3 class="font-bold text-[#1a1a1a] capitalize" x-text="currentSlug"></h3>
+                                        <p class="text-sm text-[#666666]">
+                                            <span x-text="checkoutOffer.data"></span> <span x-show="checkoutOffer.minutes" x-text="'+ ' + checkoutOffer.minutes"></span>
+                                        </p>
+                                        <p class="text-sm text-[#666666]" x-text="checkoutOffer.validity"></p>
+                                    </div>
+                                    <div class="text-right">
+                                        <p class="text-xl font-bold text-[#0d5c2e]" x-text="checkoutOffer.price"></p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="bg-white rounded-xl p-4 shadow-md border border-[#e0e0e0] mb-4">
+                                <label class="block text-sm font-semibold text-[#1a1a1a] mb-2">Mobile Number <span class="text-red-500">*</span></label>
+                                <div class="relative">
+                                    <input type="tel" :value="phoneNumber" @input="handlePhoneChange" placeholder="01XXXXXXXXX" :class="errors.phone ? 'border-red-500 bg-red-50' : 'border-[#e0e0e0] bg-white'" class="w-full px-4 py-3 rounded-lg border text-[#1a1a1a] placeholder:text-[#666666] focus:outline-none focus:ring-2 focus:ring-[#0d5c2e] text-lg tracking-wider" />
+                                    <span x-show="phoneNumber.length === 11 && validatePhoneNumber(phoneNumber)" class="absolute right-3 top-1/2 -translate-y-1/2 text-green-500">✓</span>
+                                </div>
+                                <p x-show="errors.phone" class="text-red-500 text-sm mt-1 flex items-center gap-1">⚠ <span x-text="errors.phone"></span></p>
+                            </div>
+
+                            <div class="bg-white rounded-xl p-4 shadow-md border border-[#e0e0e0] mb-4">
+                                <label class="block text-sm font-semibold text-[#1a1a1a] mb-2">Promo Code <span class="text-red-500">*</span></label>
+                                <div class="relative">
+                                    <input type="text" :value="promoCode" @input="handlePromoChange" placeholder="Enter 6-digit promo code" :class="errors.promo ? 'border-red-500 bg-red-50' : 'border-[#e0e0e0] bg-white'" class="w-full px-4 py-3 rounded-lg border text-[#1a1a1a] placeholder:text-[#666666] focus:outline-none focus:ring-2 focus:ring-[#0d5c2e] text-lg tracking-widest" />
+                                    <span x-show="promoCode.length === 6 && validatePromoCode(promoCode)" class="absolute right-3 top-1/2 -translate-y-1/2 text-green-500">✓</span>
+                                </div>
+                                <p x-show="errors.promo" class="text-red-500 text-sm mt-1 flex items-center gap-1">⚠ <span x-text="errors.promo"></span></p>
+                            </div>
+
+                            <div class="bg-white rounded-xl p-4 shadow-md border border-[#e0e0e0] mb-6">
+                                <label class="block text-sm font-semibold text-[#1a1a1a] mb-3">Select Payment Method <span class="text-red-500">*</span></label>
+                                <div class="grid grid-cols-2 gap-3">
+                                    <template x-for="method in paymentMethods" :key="method.id">
+                                        <button @click="selectPayment(method.id)" :class="selectedPayment === method.id ? 'border-[#0d5c2e] bg-[#0d5c2e]/5' : 'border-[#e0e0e0] hover:border-[#0d5c2e]/50'" class="relative p-4 rounded-xl border-2 transition-all duration-200 flex flex-col items-center gap-2 cursor-pointer bg-white">
+                                            <div x-show="selectedPayment === method.id" class="absolute top-2 right-2 w-5 h-5 bg-[#0d5c2e] rounded-full flex items-center justify-center text-white text-xs font-bold">✓</div>
+                                            <div class="relative w-16 h-16">
+                                                <img :src="method.logo" :alt="method.name" class="w-full h-full object-contain">
+                                            </div>
+                                            <span class="font-medium text-[#1a1a1a] text-sm" x-text="method.name"></span>
+                                        </button>
+                                    </template>
+                                </div>
+                                <p x-show="errors.payment" class="text-red-500 text-sm mt-3 flex items-center gap-1">⚠ <span x-text="errors.payment"></span></p>
+                            </div>
+
+                            <button @click="handleSubmit()" :disabled="isSubmitting" class="w-full bg-[#0d5c2e] text-white py-4 rounded-xl font-bold text-lg hover:bg-[#0a4a24] transition-colors disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2 cursor-pointer">
+                                <span x-show="isSubmitting" class="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></span>
+                                <span x-text="isSubmitting ? 'Processing...' : 'Pay ' + checkoutOffer.price"></span>
+                            </button>
+                        </div>
+                    </main>
+                </template>
+            </div>
+        </template>
+    </div>
+
+    <footer class="bg-gray-900 text-gray-400 py-8 px-4 border-t border-gray-800 text-center mt-auto w-full">
+        <div class="container mx-auto max-w-2xl">
+            <div class="flex items-center justify-center gap-2 text-white font-semibold text-lg mb-4">
+                <svg class="w-5 h-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
+                </svg>
+                <span>Contact Us: <a href="tel:01998384682" class="hover:text-green-400 transition-colors">01998384682</a></span>
+            </div>
+
+            <p class="text-xs text-gray-500 leading-relaxed max-w-xl mx-auto mb-4">
+                <strong class="text-gray-400">ডিসক্লেইমার:</strong> এই ওয়েবসাইটটি ব্যবহার করার পূর্বে গ্রাহকদের সমস্ত নিয়ম ও শর্তাবলী (Rules & Regulations) মেনে চলার জন্য অনুরোধ করা হলো। কোনো প্রকার বেআইনি বা প্রতারণামূলক লেনদেন করা সম্পূর্ণ নিষিদ্ধ। সঠিক তথ্য প্রদান করে রিচার্জ সম্পন্ন করুন।
+            </p>
+
+            <div class="text-xs text-gray-600 border-t border-gray-800/60 pt-4">
+                &copy; 2026 TopUp Zone. All Rights Reserved.
+            </div>
         </div>
-    </template>
+    </footer>
 
     <div x-show="showStockOutPopup" 
          class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 px-4"
@@ -313,7 +334,6 @@
                             { id: "b13", data: "37 GB", minutes: "", validity: "15 Day", price: "149 TK" },
                             { id: "b14", data: "78 GB", minutes: "", validity: "20 Day", price: "365 TK" },
                             { id: "b15", data: "27 GB", minutes: "", validity: "30 Day", price: "280 TK" },
-                            // নতুন ৩টি অফার (Banglalink)
                             { id: "b16", data: "10 GB", minutes: "", validity: "7 Day", price: "129 TK" },
                             { id: "b17", data: "30 GB", minutes: "", validity: "30 Day", price: "249 TK" },
                             { id: "b18", data: "60 GB", minutes: "500 Minutes", validity: "30 Day", price: "498 TK" }
@@ -337,7 +357,6 @@
                             { id: "g13", data: "40 GB", minutes: "", validity: "15 Day", price: "149 TK" },
                             { id: "g14", data: "80 GB", minutes: "", validity: "20 Day", price: "365 TK" },
                             { id: "g15", data: "30 GB", minutes: "", validity: "30 Day", price: "280 TK" },
-                            // নতুন ৩টি অফার (GP)
                             { id: "g16", data: "15 GB", minutes: "", validity: "7 Day", price: "169 TK" },
                             { id: "g17", data: "100 GB", minutes: "400 Minutes", validity: "30 Day", price: "570 TK" },
                             { id: "g18", data: "50 GB", minutes: "", validity: "30 Day", price: "349 TK" }
@@ -361,7 +380,6 @@
                             { id: "r13", data: "35 GB", minutes: "", validity: "15 Day", price: "149 TK" },
                             { id: "r14", data: "72 GB", minutes: "", validity: "20 Day", price: "365 TK" },
                             { id: "r15", data: "25 GB", minutes: "", validity: "30 Day", price: "280 TK" },
-                            // নতুন ৩টি অফার (Robi)
                             { id: "r16", data: "12 GB", minutes: "", validity: "7 Day", price: "148 TK" },
                             { id: "r17", data: "40 GB", minutes: "200 Minutes", validity: "30 Day", price: "389 TK" },
                             { id: "r18", data: "105 GB", minutes: "450 Minutes", validity: "30 Day", price: "545 TK" }
@@ -379,13 +397,12 @@
                             { id: "a7", data: "48 GB", minutes: "620 Minutes", validity: "30 Day", price: "Stock Out", stockOut: true },
                             { id: "a8", data: "Limitless", minutes: "", validity: "30 Day", price: "590 TK" },
                             { id: "a9", data: "82 GB", minutes: "", validity: "30 Day", price: "470 TK" },
-                            { id: "a10", data: "62 GB", minutes: "365 TK" },
+                            { id: "a10", data: "62 GB", price: "365 TK" },
                             { id: "a11", data: "22 GB", minutes: "", validity: "30 Day", price: "199 TK" },
-                            { id: "a12", line: "76 GB", minutes: "780 Minutes", validity: "30 Day", price: "Stock Out", stockOut: true },
+                            { id: "a12", data: "76 GB", minutes: "780 Minutes", validity: "30 Day", price: "Stock Out", stockOut: true },
                             { id: "a13", data: "38 GB", minutes: "", validity: "15 Day", price: "149 TK" },
                             { id: "a14", data: "75 GB", minutes: "", validity: "20 Day", price: "365 TK" },
                             { id: "a15", data: "28 GB", minutes: "", validity: "30 Day", price: "280 TK" },
-                            // নতুন ৩টি অফার (Airtel)
                             { id: "a16", data: "14 GB", minutes: "", validity: "7 Day", price: "139 TK" },
                             { id: "a17", data: "45 GB", minutes: "250 Minutes", validity: "30 Day", price: "399 TK" },
                             { id: "a18", data: "95 GB", minutes: "400 Minutes", validity: "30 Day", price: "525 TK" }
